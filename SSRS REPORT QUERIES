@@ -1,0 +1,30 @@
+### Monthly Sales Trend Report
+SELECT
+    d.[Year],
+    d.[Month],
+    SUM(f.SalesAmount) AS TotalSales,
+    SUM(f.ProfitAmount) AS TotalProfit,
+    SUM(f.Quantity) AS TotalQuantity
+FROM dbo.Sales_Fact AS f
+INNER JOIN dbo.Date_Dim AS d
+    ON f.DateKey = d.DateKey
+GROUP BY
+    d.[Year], d.[Month]
+ORDER BY
+    d.[Year], d.[Month];
+
+
+### Sales Performance by Category Report
+SELECT p.Category, SUM(f.SalesAmount) AS TotalSales, SUM(f.ProfitAmount) AS TotalProfit, SUM(f.Quantity) AS TotalQuantity FROM dbo.Sales_Fact AS f INNER JOIN dbo.Product_Dim AS p ON f.ProductKey = p.ProductKey GROUP BY p.Category ORDER BY TotalSales DESC;
+
+### Sales Performance by Region Report
+SELECT
+    l.Region,
+    SUM(f.SalesAmount) AS TotalSales,
+    SUM(f.ProfitAmount) AS TotalProfit,
+    SUM(f.Quantity) AS TotalQuantity
+FROM dbo.Sales_Fact AS f
+INNER JOIN dbo.Location_Dim AS l
+    ON f.LocationKey = l.LocationKey
+GROUP BY l.Region
+ORDER BY TotalSales DESC;
